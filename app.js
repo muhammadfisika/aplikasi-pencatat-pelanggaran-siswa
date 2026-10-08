@@ -19,8 +19,14 @@ import {
 
 import {
   getFirestore,
+  collection,
   doc,
-  getDoc
+  getDoc,
+  addDoc,
+  getDocs,
+  deleteDoc,
+  query,
+  orderBy
 } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
 
 
@@ -578,4 +584,298 @@ if (
     }
   );
 
+}
+
+// =====================================================
+// Admin Dasbord
+// =====================================================
+async function loadDataSiswa() {
+
+  const container = document.getElementById("tabelSiswa");
+
+  if (!container) return;
+
+  container.innerHTML = "Memuat data siswa...";
+
+  try {
+
+    const snapshot = await getDocs(
+      collection(db, "siswa")
+    );
+
+    if (snapshot.empty) {
+
+      container.innerHTML = `
+        <p>Belum ada data siswa.</p>
+      `;
+
+      return;
+    }
+
+    let html = `
+      <div class="table-wrapper">
+
+      <table class="data-table">
+
+        <thead>
+          <tr>
+            <th>No</th>
+            <th>NISN</th>
+            <th>Nama</th>
+            <th>Kelas</th>
+            <th>Aksi</th>
+          </tr>
+        </thead>
+
+        <tbody>
+    `;
+
+    let no = 1;
+
+    snapshot.forEach((docSnap) => {
+
+      const data = docSnap.data();
+
+      html += `
+        <tr>
+
+          <td>${no++}</td>
+
+          <td>${escapeHTML(data.nisn || "")}</td>
+
+          <td>${escapeHTML(data.nama || "")}</td>
+
+          <td>${escapeHTML(data.kelas || "")}</td>
+
+          <td>
+            <button
+              class="btn-danger"
+              onclick="hapusSiswa('${docSnap.id}')"
+            >
+              Hapus
+            </button>
+          </td>
+
+        </tr>
+      `;
+    });
+
+    html += `
+        </tbody>
+
+      </table>
+
+      </div>
+    `;
+
+    container.innerHTML = html;
+
+  } catch (error) {
+
+    console.error(error);
+
+    container.innerHTML = `
+      <p style="color:red">
+        Gagal mengambil data siswa:
+        ${escapeHTML(error.message)}
+      </p>
+    `;
+  }
+}
+
+function escapeHTML(value) {
+
+  return String(value)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
+window.hapusSiswa = async function(id) {
+
+  const yakin = confirm(
+    "Apakah Anda yakin ingin menghapus siswa ini?"
+  );
+
+  if (!yakin) return;
+
+  try {
+
+    await deleteDoc(
+      doc(db, "siswa", id)
+    );
+
+    alert("Data siswa berhasil dihapus.");
+
+    loadDataSiswa();
+
+  } catch (error) {
+
+    console.error(error);
+
+    alert(
+      "Gagal menghapus data siswa:\n" +
+      error.message
+    );
+  }
+};
+
+function parseCSV(text) {
+
+  const lines = text
+    .replace(/\r/g, "")
+    .split("\n")
+    .filter(line => line.trim() !== "");
+
+  if (lines.length < 2) {
+    throw new Error(
+      "File CSV tidak memiliki data."
+    );
+  }
+
+  const headers = lines[0]
+    .split(",")
+    .map(h => h.trim().toLowerCase());
+
+  const requiredHeaders = [
+    "nisn",
+    "nama",
+    "kelas"
+  ];
+
+  for (const header of requiredHeaders) {
+
+    if (!headers.includes(header)) {
+
+      throw new Error(
+        `Kolom "${header}" tidak ditemukan. ` +
+        `Header harus: nisn,nama,kelas`
+      );
+    }
+  }
+
+  const indexNISN = headers.indexOf("nisn");
+  const indexNama = headers.indexOf("nama");
+  const indexKelas = headers.indexOf("kelas");
+
+  const data = [];
+
+  for (let i = 1; i < lines.length; i++) {
+
+    const columns = lines[i]
+      .split(",")
+      .map(value => value.trim());
+
+    const nisn = columns[indexNISN] || "";
+    const nama = columns[indexNama] || "";
+    const kelas = columns[indexKelas] || "";
+
+    if (!nisn && !nama && !kelas) {
+      continue;
+    }
+
+    if (!nisn || !nama || !kelas) {
+
+      throw new Error(
+        `Data pada baris ${i + 1} tidak lengkap.`
+      );
+    }
+
+    data.push({
+      nisn,
+      nama,
+      kelas
+    });
+  }
+
+  return data;
+}
+
+async function importDataSiswa() {
+
+  const fileInput =
+    document.getElementById("fileSiswa");
+
+  const hasil =
+    document.getElementById("hasilImportSiswa");
+
+  if (!fileInput.files.length) {
+
+    alert("Silakan pilih file CSV terlebih dahulu.");
+
+    return;
+  }
+
+  const file = fileInput.files[0];
+
+  try {
+
+    hasil.innerHTML =
+      "Membaca file...";
+
+    const text = await file.text();
+
+    const dataSiswa = parseCSV(text);
+
+    hasil.innerHTML =
+      `Ditemukan ${dataSiswa.length} data siswa. Mengimpor...`;
+
+    let berhasil = 0;
+
+    for (const siswa of dataSiswa) {
+
+      await addDoc(
+        collection(db, "siswa"),
+        {
+          nisn: String(siswa.nisn),
+          nama: String(siswa.nama),
+          kelas: String(siswa.kelas)
+        }
+      );
+
+      berhasil++;
+    }
+
+    hasil.innerHTML = `
+      <span style="color:green">
+        Import berhasil.
+        ${berhasil} data siswa berhasil dimasukkan.
+      </span>
+    `;
+
+    fileInput.value = "";
+
+    await loadDataSiswa();
+
+  } catch (error) {
+
+    console.error(error);
+
+    hasil.innerHTML = `
+      <span style="color:red">
+        Import gagal:
+        ${escapeHTML(error.message)}
+      </span>
+    `;
+  }
+}
+
+const btnImportSiswa =
+  document.getElementById("btnImportSiswa");
+
+if (btnImportSiswa) {
+
+  btnImportSiswa.addEventListener(
+    "click",
+    importDataSiswa
+  );
+}
+
+if (role === "admin") {
+
+  showPage("adminPage");
+
+  loadDataSiswa();
 }
