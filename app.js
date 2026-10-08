@@ -50,26 +50,13 @@ import {
 // =====================================================
 
 const firebaseConfig = {
-
-  apiKey: "GANTI_API_KEY",
-
-  authDomain:
-    "GANTI_PROJECT_ID.firebaseapp.com",
-
-  projectId:
-    "GANTI_PROJECT_ID",
-
-  storageBucket:
-    "GANTI_STORAGE_BUCKET",
-
-  messagingSenderId:
-    "GANTI_MESSAGING_SENDER_ID",
-
-  appId:
-    "GANTI_APP_ID"
-
+  apiKey: "AIzaSyDTvaRqqu4y2uBhRqsJBNYYKZKICukqJp4",
+  authDomain: "pelanggaran-siswa-sman2-631d2.firebaseapp.com",
+  projectId: "pelanggaran-siswa-sman2-631d2",
+  storageBucket: "pelanggaran-siswa-sman2-631d2.firebasestorage.app",
+  messagingSenderId: "1009050312279",
+  appId: "1:1009050312279:web:e5abb8ab0edfb11d408d12"
 };
-
 
 // =====================================================
 // INITIALIZE FIREBASE
