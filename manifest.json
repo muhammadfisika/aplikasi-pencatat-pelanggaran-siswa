@@ -1,7 +1,7 @@
 {
   "name": "Pelanggaran Siswa SMAN 2 Rangkasbitung",
   "short_name": "Pelanggaran Siswa",
-  "description": "Aplikasi Pencatat Pelanggaran Siswa SMAN 2 Rangkasbitung",
+  "description": "Aplikasi pencatat pelanggaran siswa",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
