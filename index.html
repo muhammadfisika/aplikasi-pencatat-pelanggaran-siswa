@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
+
   <meta charset="UTF-8">
 
   <meta
@@ -8,279 +10,379 @@
     content="width=device-width, initial-scale=1.0"
   >
 
-  <meta name="theme-color" content="#0d6efd">
+  <meta
+    name="theme-color"
+    content="#0d6efd"
+  >
 
   <meta
     name="description"
     content="Aplikasi Pencatat Pelanggaran Siswa SMAN 2 Rangkasbitung"
   >
 
-  <link rel="manifest" href="./manifest.json">
+  <link
+    rel="manifest"
+    href="./manifest.json"
+  >
 
-  <link rel="stylesheet" href="./style.css">
+  <link
+    rel="stylesheet"
+    href="./style.css"
+  >
 
   <title>Pelanggaran Siswa</title>
+
 </head>
+
 
 <body>
 
-  <!-- ================================================= -->
-  <!-- LOADING -->
-  <!-- ================================================= -->
 
-  <div id="loadingPage" class="page">
-    <div class="card">
-      <h2>Memuat aplikasi...</h2>
-      <p>Silakan tunggu.</p>
-    </div>
+<!-- ==================================================
+     LOADING
+================================================== -->
+
+<section
+  id="loadingPage"
+  class="page loading-page"
+>
+
+  <div class="loading-box">
+
+    <div class="spinner"></div>
+
+    <h2>Memuat aplikasi...</h2>
+
+    <p>Silakan tunggu.</p>
+
   </div>
 
+</section>
 
-  <!-- ================================================= -->
-  <!-- LOGIN -->
-  <!-- ================================================= -->
 
-  <section id="loginPage" class="page hidden">
 
-    <div class="login-container">
+<!-- ==================================================
+     LOGIN
+================================================== -->
 
-      <div class="login-card">
+<section
+  id="loginPage"
+  class="page hidden"
+>
 
-        <div class="app-logo">
-          <div class="logo-placeholder">
-            GDS
-          </div>
+  <div class="login-container">
+
+    <div class="login-card">
+
+      <div class="logo-box">
+
+        <div class="logo-text">
+          GDS
         </div>
 
-        <h1>Pelanggaran Siswa</h1>
+      </div>
 
-        <p class="subtitle">
-          SMAN 2 Rangkasbitung
+      <h1>Pelanggaran Siswa</h1>
+
+      <p class="subtitle">
+        SMAN 2 Rangkasbitung
+      </p>
+
+
+      <form id="loginForm">
+
+        <div class="form-group">
+
+          <label for="email">
+            Email
+          </label>
+
+          <input
+            type="email"
+            id="email"
+            placeholder="Masukkan email"
+            autocomplete="username"
+            required
+          >
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label for="password">
+            Password
+          </label>
+
+          <input
+            type="password"
+            id="password"
+            placeholder="Masukkan password"
+            autocomplete="current-password"
+            required
+          >
+
+        </div>
+
+
+        <button
+          type="submit"
+          id="loginButton"
+          class="btn btn-primary btn-full"
+        >
+          Login
+        </button>
+
+      </form>
+
+
+      <div
+        id="loginMessage"
+        class="message"
+      ></div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+
+<!-- ==================================================
+     ADMIN
+================================================== -->
+
+<section
+  id="adminPage"
+  class="page hidden"
+>
+
+  <header class="app-header">
+
+    <div>
+
+      <h2>Admin</h2>
+
+      <span id="adminName"></span>
+
+    </div>
+
+    <button
+      id="logoutAdmin"
+      class="btn btn-danger"
+    >
+      Logout
+    </button>
+
+  </header>
+
+
+  <main class="container">
+
+    <div class="welcome-card">
+
+      <h2>Dashboard Admin</h2>
+
+      <p>
+        Selamat datang di aplikasi
+        pencatat pelanggaran siswa.
+      </p>
+
+    </div>
+
+
+    <div class="dashboard-grid">
+
+      <div class="menu-card">
+
+        <div class="menu-icon">👥</div>
+
+        <h3>Data Petugas GDS</h3>
+
+        <p>
+          Import dan kelola data
+          petugas GDS.
         </p>
 
-        <form id="loginForm">
-
-          <div class="form-group">
-
-            <label for="email">
-              Email
-            </label>
-
-            <input
-              type="email"
-              id="email"
-              placeholder="Masukkan email"
-              autocomplete="username"
-              required
-            >
-
-          </div>
+      </div>
 
 
-          <div class="form-group">
+      <div class="menu-card">
 
-            <label for="password">
-              Password
-            </label>
+        <div class="menu-icon">👨‍🏫</div>
 
-            <input
-              type="password"
-              id="password"
-              placeholder="Masukkan password"
-              autocomplete="current-password"
-              required
-            >
+        <h3>Data Guru</h3>
 
-          </div>
+        <p>
+          Import dan kelola data guru.
+        </p>
+
+      </div>
 
 
-          <button
-            type="submit"
-            id="loginButton"
-            class="btn btn-primary btn-full"
-          >
-            Login
-          </button>
+      <div class="menu-card">
 
-        </form>
+        <div class="menu-icon">🎓</div>
+
+        <h3>Data Siswa</h3>
+
+        <p>
+          Import dan kelola data siswa.
+        </p>
+
+      </div>
 
 
-        <div
-          id="loginMessage"
-          class="message"
-        ></div>
+      <div class="menu-card">
+
+        <div class="menu-icon">⚠️</div>
+
+        <h3>Jenis Pelanggaran</h3>
+
+        <p>
+          Kelola jenis dan rincian
+          pelanggaran.
+        </p>
+
+      </div>
+
+
+      <div class="menu-card">
+
+        <div class="menu-icon">📋</div>
+
+        <h3>Data Pelanggaran</h3>
+
+        <p>
+          Melihat data pelanggaran.
+        </p>
+
+      </div>
+
+
+      <div class="menu-card">
+
+        <div class="menu-icon">📄</div>
+
+        <h3>Rekap PDF</h3>
+
+        <p>
+          Download rekap pelanggaran.
+        </p>
 
       </div>
 
     </div>
 
-  </section>
+  </main>
+
+</section>
 
 
-  <!-- ================================================= -->
-  <!-- ADMIN -->
-  <!-- ================================================= -->
 
-  <section id="adminPage" class="page hidden">
+<!-- ==================================================
+     GDS
+================================================== -->
 
-    <header class="app-header">
+<section
+  id="gdsPage"
+  class="page hidden"
+>
 
-      <div>
-        <h2>Admin</h2>
-        <span id="adminName"></span>
-      </div>
+  <header class="app-header">
 
-      <button
-        class="btn btn-danger"
-        id="logoutAdmin"
-      >
-        Logout
-      </button>
+    <div>
 
-    </header>
+      <h2>Petugas GDS</h2>
 
+      <span id="gdsName"></span>
 
-    <main class="container">
+    </div>
 
-      <div class="dashboard-grid">
+    <button
+      id="logoutGds"
+      class="btn btn-danger"
+    >
+      Logout
+    </button>
 
-        <div class="menu-card">
-          <div class="menu-icon">👥</div>
-          <h3>Data Pengguna</h3>
-          <p>
-            Kelola Admin, GDS dan Guru.
-          </p>
-        </div>
+  </header>
 
 
-        <div class="menu-card">
-          <div class="menu-icon">🎓</div>
-          <h3>Data Siswa</h3>
-          <p>
-            Import dan kelola data siswa.
-          </p>
-        </div>
+  <main class="container">
+
+    <div class="welcome-card">
+
+      <h2>Pencatatan Pelanggaran</h2>
+
+      <p>
+        Modul pencatatan akan dibuat
+        pada tahap berikutnya.
+      </p>
+
+    </div>
+
+  </main>
+
+</section>
 
 
-        <div class="menu-card">
-          <div class="menu-icon">⚠️</div>
-          <h3>Jenis Pelanggaran</h3>
-          <p>
-            Kelola jenis dan rincian pelanggaran.
-          </p>
-        </div>
+
+<!-- ==================================================
+     GURU
+================================================== -->
+
+<section
+  id="guruPage"
+  class="page hidden"
+>
+
+  <header class="app-header">
+
+    <div>
+
+      <h2>Guru</h2>
+
+      <span id="guruName"></span>
+
+    </div>
+
+    <button
+      id="logoutGuru"
+      class="btn btn-danger"
+    >
+      Logout
+    </button>
+
+  </header>
 
 
-        <div class="menu-card">
-          <div class="menu-icon">📋</div>
-          <h3>Data Pelanggaran</h3>
-          <p>
-            Lihat dan kelola data pelanggaran.
-          </p>
-        </div>
+  <main class="container">
+
+    <div class="welcome-card">
+
+      <h2>Ranking Pelanggaran Siswa</h2>
+
+      <p>
+        Modul ranking akan dibuat
+        pada tahap berikutnya.
+      </p>
+
+    </div>
+
+  </main>
+
+</section>
 
 
-        <div class="menu-card">
-          <div class="menu-icon">📄</div>
-          <h3>Rekap PDF</h3>
-          <p>
-            Download rekap pelanggaran.
-          </p>
-        </div>
 
-      </div>
+<script
+  type="module"
+  src="./app.js"
+></script>
 
-    </main>
-
-  </section>
-
-
-  <!-- ================================================= -->
-  <!-- GDS -->
-  <!-- ================================================= -->
-
-  <section id="gdsPage" class="page hidden">
-
-    <header class="app-header">
-
-      <div>
-        <h2>Petugas GDS</h2>
-        <span id="gdsName"></span>
-      </div>
-
-      <button
-        class="btn btn-danger"
-        id="logoutGds"
-      >
-        Logout
-      </button>
-
-    </header>
-
-
-    <main class="container">
-
-      <div class="card">
-
-        <h2>
-          Pencatatan Pelanggaran
-        </h2>
-
-        <p>
-          Modul pencatatan akan dibuat pada tahap berikutnya.
-        </p>
-
-      </div>
-
-    </main>
-
-  </section>
-
-
-  <!-- ================================================= -->
-  <!-- GURU -->
-  <!-- ================================================= -->
-
-  <section id="guruPage" class="page hidden">
-
-    <header class="app-header">
-
-      <div>
-        <h2>Guru</h2>
-        <span id="guruName"></span>
-      </div>
-
-      <button
-        class="btn btn-danger"
-        id="logoutGuru"
-      >
-        Logout
-      </button>
-
-    </header>
-
-
-    <main class="container">
-
-      <div class="card">
-
-        <h2>
-          Ranking Pelanggaran Siswa
-        </h2>
-
-        <p>
-          Modul ranking akan dibuat pada tahap berikutnya.
-        </p>
-
-      </div>
-
-    </main>
-
-  </section>
-
-
-  <!-- Firebase App -->
-  <script type="module" src="./app.js"></script>
 
 </body>
+
 </html>
