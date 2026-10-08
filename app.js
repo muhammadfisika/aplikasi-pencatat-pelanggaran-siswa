@@ -736,7 +736,7 @@ function parseCSV(text) {
   }
 
   const headers = lines[0]
-    .split(",")
+    .split(";")
     .map(h => h.trim().toLowerCase());
 
   const requiredHeaders = [
