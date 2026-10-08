@@ -1,52 +1,49 @@
 // =====================================================
 // APLIKASI PELANGGARAN SISWA
 // SMAN 2 RANGKASBITUNG
-// FIREBASE
 // =====================================================
 
-// -----------------------------------------------------
+
+// =====================================================
 // FIREBASE APP
-// -----------------------------------------------------
+// =====================================================
 
 import {
   initializeApp
-} from "https://www.gstatic.com/firebasejs/12.3.0/firebase-app.js";
+} from
+"https://www.gstatic.com/firebasejs/12.3.0/firebase-app.js";
 
 
-// -----------------------------------------------------
+// =====================================================
 // FIREBASE AUTH
-// -----------------------------------------------------
+// =====================================================
 
 import {
   getAuth,
   signInWithEmailAndPassword,
   onAuthStateChanged,
   signOut
-} from "https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
+} from
+"https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
 
 
-// -----------------------------------------------------
+// =====================================================
 // FIRESTORE
-// -----------------------------------------------------
+// =====================================================
 
 import {
   getFirestore,
   doc,
   getDoc
-} from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
+} from
+"https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
 
 
 // =====================================================
-// KONFIGURASI FIREBASE
+// FIREBASE CONFIG
 // =====================================================
 //
-// GANTI BAGIAN INI DENGAN KONFIGURASI FIREBASE ANDA
-//
-// Firebase Console
-// Project settings
-// Your apps
-// Web app
-//
+// GANTI DENGAN CONFIG FIREBASE ANDA
 // =====================================================
 
 const firebaseConfig = {
@@ -58,15 +55,21 @@ const firebaseConfig = {
   appId: "1:1009050312279:web:e5abb8ab0edfb11d408d12"
 };
 
+
 // =====================================================
 // INITIALIZE FIREBASE
 // =====================================================
 
-const app = initializeApp(firebaseConfig);
+const app =
+  initializeApp(firebaseConfig);
 
-const auth = getAuth(app);
 
-const db = getFirestore(app);
+const auth =
+  getAuth(app);
+
+
+const db =
+  getFirestore(app);
 
 
 // =====================================================
@@ -74,82 +77,119 @@ const db = getFirestore(app);
 // =====================================================
 
 const loadingPage =
-  document.getElementById("loadingPage");
+  document.getElementById(
+    "loadingPage"
+  );
+
 
 const loginPage =
-  document.getElementById("loginPage");
+  document.getElementById(
+    "loginPage"
+  );
+
 
 const adminPage =
-  document.getElementById("adminPage");
+  document.getElementById(
+    "adminPage"
+  );
+
 
 const gdsPage =
-  document.getElementById("gdsPage");
+  document.getElementById(
+    "gdsPage"
+  );
+
 
 const guruPage =
-  document.getElementById("guruPage");
+  document.getElementById(
+    "guruPage"
+  );
+
 
 const loginForm =
-  document.getElementById("loginForm");
+  document.getElementById(
+    "loginForm"
+  );
+
 
 const loginButton =
-  document.getElementById("loginButton");
+  document.getElementById(
+    "loginButton"
+  );
+
 
 const loginMessage =
-  document.getElementById("loginMessage");
+  document.getElementById(
+    "loginMessage"
+  );
 
 
 // =====================================================
-// HELPER: SEMBUNYIKAN SEMUA HALAMAN
+// SEMBUNYIKAN SEMUA HALAMAN
 // =====================================================
 
 function hideAllPages() {
 
-  loginPage.classList.add("hidden");
+  loginPage.classList.add(
+    "hidden"
+  );
 
-  adminPage.classList.add("hidden");
+  adminPage.classList.add(
+    "hidden"
+  );
 
-  gdsPage.classList.add("hidden");
+  gdsPage.classList.add(
+    "hidden"
+  );
 
-  guruPage.classList.add("hidden");
-
-}
-
-
-// =====================================================
-// HELPER: PESAN LOGIN
-// =====================================================
-
-function showLoginMessage(message) {
-
-  loginMessage.textContent = message;
-
-  loginMessage.classList.add("show");
+  guruPage.classList.add(
+    "hidden"
+  );
 
 }
 
 
 // =====================================================
-// HELPER: CLEAR LOGIN MESSAGE
-// =====================================================
-
-function clearLoginMessage() {
-
-  loginMessage.textContent = "";
-
-  loginMessage.classList.remove("show");
-
-}
-
-
-// =====================================================
-// HELPER: TAMPILKAN HALAMAN
+// TAMPILKAN HALAMAN
 // =====================================================
 
 function showPage(page) {
 
   hideAllPages();
 
-  page.classList.remove("hidden");
+  page.classList.remove(
+    "hidden"
+  );
+
+}
+
+
+// =====================================================
+// PESAN LOGIN
+// =====================================================
+
+function showLoginMessage(
+  message
+) {
+
+  loginMessage.textContent =
+    message;
+
+  loginMessage.classList.add(
+    "show"
+  );
+
+}
+
+
+function clearLoginMessage() {
+
+  loginMessage.textContent =
+    "";
+
+  loginMessage.classList.remove(
+    "show"
+  );
 
 }
 
@@ -160,30 +200,43 @@ function showPage(page) {
 
 loginForm.addEventListener(
   "submit",
-  async function (event) {
+  async function(event) {
 
     event.preventDefault();
 
     clearLoginMessage();
 
+
     const email =
-      document.getElementById("email").value.trim();
+      document
+        .getElementById("email")
+        .value
+        .trim();
+
 
     const password =
-      document.getElementById("password").value;
+      document
+        .getElementById("password")
+        .value;
 
 
-    if (!email || !password) {
+    if (
+      !email ||
+      !password
+    ) {
 
       showLoginMessage(
         "Email dan password harus diisi."
       );
 
       return;
+
     }
 
 
-    loginButton.disabled = true;
+    loginButton.disabled =
+      true;
+
 
     loginButton.textContent =
       "Memproses...";
@@ -197,49 +250,79 @@ loginForm.addEventListener(
         password
       );
 
-    } catch (error) {
+    }
+
+    catch(error) {
 
       console.error(
-        "Login error:",
         error
       );
+
 
       let message =
         "Login gagal.";
 
-      switch (error.code) {
 
-        case "auth/invalid-credential":
+      switch(
+        error.code
+      ) {
+
+        case
+        "auth/invalid-credential":
+
           message =
             "Email atau password salah.";
+
           break;
 
-        case "auth/user-not-found":
+
+        case
+        "auth/user-not-found":
+
           message =
             "Akun tidak ditemukan.";
+
           break;
 
-        case "auth/wrong-password":
+
+        case
+        "auth/wrong-password":
+
           message =
             "Password salah.";
+
           break;
 
-        case "auth/too-many-requests":
+
+        case
+        "auth/too-many-requests":
+
           message =
-            "Terlalu banyak percobaan login. Coba lagi nanti.";
+            "Terlalu banyak percobaan login.";
+
           break;
+
 
         default:
+
           message =
             error.message;
+
       }
 
-      showLoginMessage(message);
 
-      loginButton.disabled = false;
+      showLoginMessage(
+        message
+      );
+
+
+      loginButton.disabled =
+        false;
+
 
       loginButton.textContent =
         "Login";
+
     }
 
   }
@@ -247,25 +330,37 @@ loginForm.addEventListener(
 
 
 // =====================================================
-// CEK ROLE USER
+// BACA DATA USER FIRESTORE
 // =====================================================
 
-async function loadUserRole(user) {
+async function loadUserRole(
+  user
+) {
 
   try {
 
     const userRef =
-      doc(db, "users", user.uid);
+      doc(
+        db,
+        "users",
+        user.uid
+      );
+
 
     const userSnap =
-      await getDoc(userRef);
+      await getDoc(
+        userRef
+      );
 
 
-    if (!userSnap.exists()) {
+    if (
+      !userSnap.exists()
+    ) {
 
       throw new Error(
-        "Data pengguna tidak ditemukan di Firestore."
+        "Data pengguna belum dibuat di Firestore."
       );
+
     }
 
 
@@ -274,9 +369,11 @@ async function loadUserRole(user) {
 
 
     const role =
-      String(userData.role || "")
-        .trim()
-        .toLowerCase();
+      String(
+        userData.role || ""
+      )
+      .trim()
+      .toLowerCase();
 
 
     const nama =
@@ -286,9 +383,10 @@ async function loadUserRole(user) {
 
 
     console.log(
-      "User:",
+      "Nama:",
       nama
     );
+
 
     console.log(
       "Role:",
@@ -296,80 +394,124 @@ async function loadUserRole(user) {
     );
 
 
-    // -------------------------------------------------
+    // =================================================
     // ADMIN
-    // -------------------------------------------------
+    // =================================================
 
-    if (role === "admin") {
+    if (
+      role === "admin"
+    ) {
 
-      document.getElementById(
-        "adminName"
-      ).textContent = nama;
+      document
+        .getElementById(
+          "adminName"
+        )
+        .textContent =
+          nama;
 
-      showPage(adminPage);
+
+      showPage(
+        adminPage
+      );
+
 
       return;
+
     }
 
 
-    // -------------------------------------------------
+    // =================================================
     // GDS
-    // -------------------------------------------------
+    // =================================================
 
-    if (role === "gds") {
+    if (
+      role === "gds"
+    ) {
 
-      document.getElementById(
-        "gdsName"
-      ).textContent = nama;
+      document
+        .getElementById(
+          "gdsName"
+        )
+        .textContent =
+          nama;
 
-      showPage(gdsPage);
+
+      showPage(
+        gdsPage
+      );
+
 
       return;
+
     }
 
 
-    // -------------------------------------------------
+    // =================================================
     // GURU
-    // -------------------------------------------------
+    // =================================================
 
-    if (role === "guru") {
+    if (
+      role === "guru"
+    ) {
 
-      document.getElementById(
-        "guruName"
-      ).textContent = nama;
+      document
+        .getElementById(
+          "guruName"
+        )
+        .textContent =
+          nama;
 
-      showPage(guruPage);
+
+      showPage(
+        guruPage
+      );
+
 
       return;
+
     }
 
 
-    // -------------------------------------------------
-    // ROLE TIDAK DIKENAL
-    // -------------------------------------------------
+    // =================================================
+    // ROLE SALAH
+    // =================================================
 
-    await signOut(auth);
+    await signOut(
+      auth
+    );
+
 
     throw new Error(
       "Role pengguna tidak valid."
     );
 
-  } catch (error) {
+  }
+
+  catch(error) {
 
     console.error(
-      "Gagal membaca role:",
+      "Role error:",
       error
     );
 
-    await signOut(auth);
 
-    showPage(loginPage);
+    await signOut(
+      auth
+    );
+
+
+    showPage(
+      loginPage
+    );
+
 
     showLoginMessage(
       error.message ||
-      "Tidak dapat membaca data pengguna."
+      "Gagal membaca data pengguna."
     );
+
   }
+
 }
 
 
@@ -379,7 +521,7 @@ async function loadUserRole(user) {
 
 onAuthStateChanged(
   auth,
-  async function (user) {
+  async function(user) {
 
     loadingPage.classList.add(
       "hidden"
@@ -388,11 +530,17 @@ onAuthStateChanged(
 
     if (user) {
 
-      await loadUserRole(user);
+      await loadUserRole(
+        user
+      );
 
-    } else {
+    }
 
-      showPage(loginPage);
+    else {
+
+      showPage(
+        loginPage
+      );
 
     }
 
@@ -405,26 +553,50 @@ onAuthStateChanged(
 // =====================================================
 
 document
-  .getElementById("logoutAdmin")
+  .getElementById(
+    "logoutAdmin"
+  )
   .addEventListener(
     "click",
-    () => signOut(auth)
+    async function() {
+
+      await signOut(
+        auth
+      );
+
+    }
   );
 
 
 document
-  .getElementById("logoutGds")
+  .getElementById(
+    "logoutGds"
+  )
   .addEventListener(
     "click",
-    () => signOut(auth)
+    async function() {
+
+      await signOut(
+        auth
+      );
+
+    }
   );
 
 
 document
-  .getElementById("logoutGuru")
+  .getElementById(
+    "logoutGuru"
+  )
   .addEventListener(
     "click",
-    () => signOut(auth)
+    async function() {
+
+      await signOut(
+        auth
+      );
+
+    }
   );
 
 
@@ -432,14 +604,18 @@ document
 // SERVICE WORKER
 // =====================================================
 
-if ("serviceWorker" in navigator) {
+if (
+  "serviceWorker" in navigator
+) {
 
   window.addEventListener(
     "load",
-    () => {
+    function() {
 
       navigator.serviceWorker
-        .register("./sw.js")
+        .register(
+          "./sw.js"
+        )
         .then(
           registration => {
 
