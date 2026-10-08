@@ -277,7 +277,57 @@
 
   </main>
 
+  <div class="admin-section">
+
+  <h2>Data Siswa</h2>
+
+  <div class="card">
+
+    <h3>Import Data Siswa</h3>
+
+    <p>
+      Format file CSV:
+      <strong>nisn,nama,kelas</strong>
+    </p>
+
+    <input
+      type="file"
+      id="fileSiswa"
+      accept=".csv"
+    >
+
+    <button
+      type="button"
+      id="btnImportSiswa"
+      class="btn-primary"
+    >
+      Import Data Siswa
+    </button>
+
+    <div id="hasilImportSiswa"></div>
+
+  </div>
+
+  <div class="card">
+
+    <h3>Data Siswa</h3>
+
+    <input
+      type="text"
+      id="searchSiswa"
+      placeholder="Cari nama / NISN / kelas..."
+    >
+
+    <div id="tabelSiswa">
+      Memuat data siswa...
+    </div>
+
+  </div>
+
+</div>
+
 </section>
+  
 
 
 
