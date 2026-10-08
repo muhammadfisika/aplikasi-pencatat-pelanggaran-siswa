@@ -1,6 +1,7 @@
 const CACHE_NAME =
   "pelanggaran-siswa-v1";
 
+
 const FILES_TO_CACHE = [
 
   "./",
@@ -22,7 +23,10 @@ self.addEventListener(
 
     event.waitUntil(
 
-      caches.open(CACHE_NAME)
+      caches
+        .open(
+          CACHE_NAME
+        )
         .then(
           cache => {
 
@@ -47,7 +51,8 @@ self.addEventListener(
 
     event.waitUntil(
 
-      caches.keys()
+      caches
+        .keys()
         .then(
           cacheNames => {
 
@@ -56,11 +61,14 @@ self.addEventListener(
               cacheNames
                 .filter(
                   name =>
-                    name !== CACHE_NAME
+                    name !==
+                    CACHE_NAME
                 )
                 .map(
                   name =>
-                    caches.delete(name)
+                    caches.delete(
+                      name
+                    )
                 )
 
             );
@@ -82,13 +90,15 @@ self.addEventListener(
 
     event.respondWith(
 
-      fetch(event.request)
-        .catch(
-          () =>
-            caches.match(
-              event.request
-            )
-        )
+      fetch(
+        event.request
+      )
+      .catch(
+        () =>
+          caches.match(
+            event.request
+          )
+      )
 
     );
 
