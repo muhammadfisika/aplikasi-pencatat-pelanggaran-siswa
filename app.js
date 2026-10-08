@@ -4,46 +4,32 @@
 // =====================================================
 
 
-// =====================================================
-// FIREBASE APP
-// =====================================================
-
 import {
   initializeApp
-} from
-"https://www.gstatic.com/firebasejs/12.3.0/firebase-app.js";
+} from "https://www.gstatic.com/firebasejs/12.3.0/firebase-app.js";
 
-
-// =====================================================
-// FIREBASE AUTH
-// =====================================================
 
 import {
   getAuth,
   signInWithEmailAndPassword,
   onAuthStateChanged,
   signOut
-} from
-"https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
+} from "https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
 
-
-// =====================================================
-// FIRESTORE
-// =====================================================
 
 import {
   getFirestore,
   doc,
   getDoc
-} from
-"https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
+} from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
 
 
 // =====================================================
 // FIREBASE CONFIG
 // =====================================================
 //
-// GANTI DENGAN CONFIG FIREBASE ANDA
+// GANTI SEMUA NILAI DI BAWAH DENGAN CONFIG FIREBASE
+// PROJECT ANDA.
 // =====================================================
 
 const firebaseConfig = {
@@ -63,10 +49,8 @@ const firebaseConfig = {
 const app =
   initializeApp(firebaseConfig);
 
-
 const auth =
   getAuth(app);
-
 
 const db =
   getFirestore(app);
@@ -81,42 +65,35 @@ const loadingPage =
     "loadingPage"
   );
 
-
 const loginPage =
   document.getElementById(
     "loginPage"
   );
-
 
 const adminPage =
   document.getElementById(
     "adminPage"
   );
 
-
 const gdsPage =
   document.getElementById(
     "gdsPage"
   );
-
 
 const guruPage =
   document.getElementById(
     "guruPage"
   );
 
-
 const loginForm =
   document.getElementById(
     "loginForm"
   );
 
-
 const loginButton =
   document.getElementById(
     "loginButton"
   );
-
 
 const loginMessage =
   document.getElementById(
@@ -125,7 +102,7 @@ const loginMessage =
 
 
 // =====================================================
-// SEMBUNYIKAN SEMUA HALAMAN
+// HIDE ALL PAGES
 // =====================================================
 
 function hideAllPages() {
@@ -150,7 +127,7 @@ function hideAllPages() {
 
 
 // =====================================================
-// TAMPILKAN HALAMAN
+// SHOW PAGE
 // =====================================================
 
 function showPage(page) {
@@ -165,7 +142,7 @@ function showPage(page) {
 
 
 // =====================================================
-// PESAN LOGIN
+// LOGIN MESSAGE
 // =====================================================
 
 function showLoginMessage(
@@ -237,7 +214,6 @@ loginForm.addEventListener(
     loginButton.disabled =
       true;
 
-
     loginButton.textContent =
       "Memproses...";
 
@@ -255,6 +231,7 @@ loginForm.addEventListener(
     catch(error) {
 
       console.error(
+        "Login error:",
         error
       );
 
@@ -263,50 +240,50 @@ loginForm.addEventListener(
         "Login gagal.";
 
 
-      switch(
-        error.code
+      if (
+        error.code ===
+        "auth/invalid-credential"
       ) {
 
-        case
-        "auth/invalid-credential":
+        message =
+          "Email atau password salah.";
 
-          message =
-            "Email atau password salah.";
+      }
 
-          break;
+      else if (
+        error.code ===
+        "auth/user-not-found"
+      ) {
 
+        message =
+          "Akun tidak ditemukan.";
 
-        case
-        "auth/user-not-found":
+      }
 
-          message =
-            "Akun tidak ditemukan.";
+      else if (
+        error.code ===
+        "auth/wrong-password"
+      ) {
 
-          break;
+        message =
+          "Password salah.";
 
+      }
 
-        case
-        "auth/wrong-password":
+      else if (
+        error.code ===
+        "auth/too-many-requests"
+      ) {
 
-          message =
-            "Password salah.";
+        message =
+          "Terlalu banyak percobaan login.";
 
-          break;
+      }
 
+      else {
 
-        case
-        "auth/too-many-requests":
-
-          message =
-            "Terlalu banyak percobaan login.";
-
-          break;
-
-
-        default:
-
-          message =
-            error.message;
+        message =
+          error.message;
 
       }
 
@@ -319,7 +296,6 @@ loginForm.addEventListener(
       loginButton.disabled =
         false;
 
-
       loginButton.textContent =
         "Login";
 
@@ -330,7 +306,7 @@ loginForm.addEventListener(
 
 
 // =====================================================
-// BACA DATA USER FIRESTORE
+// LOAD USER ROLE
 // =====================================================
 
 async function loadUserRole(
@@ -347,46 +323,45 @@ async function loadUserRole(
       );
 
 
-    const userSnap =
+    const userSnapshot =
       await getDoc(
         userRef
       );
 
 
     if (
-      !userSnap.exists()
+      !userSnapshot.exists()
     ) {
 
       throw new Error(
-        "Data pengguna belum dibuat di Firestore."
+        "Data pengguna tidak ditemukan di Firestore."
       );
 
     }
 
 
-    const userData =
-      userSnap.data();
+    const data =
+      userSnapshot.data();
 
 
     const role =
       String(
-        userData.role || ""
+        data.role || ""
       )
       .trim()
       .toLowerCase();
 
 
     const nama =
-      userData.nama ||
+      data.nama ||
       user.email ||
       "Pengguna";
 
 
     console.log(
-      "Nama:",
+      "User:",
       nama
     );
-
 
     console.log(
       "Role:",
@@ -394,9 +369,7 @@ async function loadUserRole(
     );
 
 
-    // =================================================
     // ADMIN
-    // =================================================
 
     if (
       role === "admin"
@@ -409,20 +382,16 @@ async function loadUserRole(
         .textContent =
           nama;
 
-
       showPage(
         adminPage
       );
-
 
       return;
 
     }
 
 
-    // =================================================
     // GDS
-    // =================================================
 
     if (
       role === "gds"
@@ -435,20 +404,16 @@ async function loadUserRole(
         .textContent =
           nama;
 
-
       showPage(
         gdsPage
       );
-
 
       return;
 
     }
 
 
-    // =================================================
     // GURU
-    // =================================================
 
     if (
       role === "guru"
@@ -461,20 +426,14 @@ async function loadUserRole(
         .textContent =
           nama;
 
-
       showPage(
         guruPage
       );
-
 
       return;
 
     }
 
-
-    // =================================================
-    // ROLE SALAH
-    // =================================================
 
     await signOut(
       auth
@@ -490,7 +449,7 @@ async function loadUserRole(
   catch(error) {
 
     console.error(
-      "Role error:",
+      "Gagal membaca role:",
       error
     );
 
@@ -506,8 +465,7 @@ async function loadUserRole(
 
 
     showLoginMessage(
-      error.message ||
-      "Gagal membaca data pengguna."
+      error.message
     );
 
   }
@@ -558,13 +516,7 @@ document
   )
   .addEventListener(
     "click",
-    async function() {
-
-      await signOut(
-        auth
-      );
-
-    }
+    () => signOut(auth)
   );
 
 
@@ -574,13 +526,7 @@ document
   )
   .addEventListener(
     "click",
-    async function() {
-
-      await signOut(
-        auth
-      );
-
-    }
+    () => signOut(auth)
   );
 
 
@@ -590,13 +536,7 @@ document
   )
   .addEventListener(
     "click",
-    async function() {
-
-      await signOut(
-        auth
-      );
-
-    }
+    () => signOut(auth)
   );
 
 
@@ -610,12 +550,10 @@ if (
 
   window.addEventListener(
     "load",
-    function() {
+    () => {
 
       navigator.serviceWorker
-        .register(
-          "./sw.js"
-        )
+        .register("./sw.js")
         .then(
           registration => {
 
